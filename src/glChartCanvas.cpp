@@ -653,13 +653,15 @@ void glChartCanvas::Init() {
 
 //  Gesture support for platforms other than Android
 #ifdef HAVE_WX_GESTURE_EVENTS
-  if (!EnableTouchEvents(wxTOUCH_ZOOM_GESTURE | wxTOUCH_PAN_GESTURES |
+
+  fprintf(stderr, "GESTURE gl\n");
+
+  if (!EnableTouchEvents(wxTOUCH_ZOOM_GESTURE | 
                          wxTOUCH_PRESS_GESTURES)) {
     wxLogError("Failed to enable touch events");
   }
 
   Bind(wxEVT_GESTURE_ZOOM, &ChartCanvas::OnZoom, m_pParentCanvas);
-  Bind(wxEVT_GESTURE_PAN, &ChartCanvas::OnPan, m_pParentCanvas);
 
   Bind(wxEVT_LONG_PRESS, &ChartCanvas::OnLongPress, m_pParentCanvas);
   Bind(wxEVT_PRESS_AND_TAP, &ChartCanvas::OnPressAndTap, m_pParentCanvas);

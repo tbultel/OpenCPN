@@ -47,7 +47,7 @@ SENCJobTicket::SENCJobTicket() {
   m_status = THREAD_INACTIVE;
 }
 
-const wxEventType wxEVT_OCPN_BUILDSENCTHREAD = wxNewEventType();
+const wxEventType wxEVT_OCPN_BUILDSENCTHREAD = wxNewEventType((char*) "wxEVT_OCPN_BUILDSENCTHREAD");
 
 //----------------------------------------------------------------------------------
 //      OCPN_BUILDSENC_ThreadEvent Implementation

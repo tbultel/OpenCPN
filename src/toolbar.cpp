@@ -1619,7 +1619,7 @@ void ToolTipWin::OnPaint(wxPaintEvent &event) {
 BEGIN_EVENT_TABLE(ocpnToolBarSimple, wxControl)
 EVT_SIZE(ocpnToolBarSimple::OnSize) EVT_PAINT(ocpnToolBarSimple::OnPaint)
     EVT_KILL_FOCUS(ocpnToolBarSimple::OnKillFocus)
-        EVT_MOUSE_EVENTS(ocpnToolBarSimple::OnMouseEvent)
+//        EVT_MOUSE_EVENTS(ocpnToolBarSimple::OnMouseEvent)
             EVT_TIMER(TOOLTIPON_TIMER, ocpnToolBarSimple::OnToolTipTimerEvent)
                 EVT_TIMER(TOOLTIPOFF_TIMER,
                           ocpnToolBarSimple::OnToolTipOffTimerEvent)
@@ -1690,6 +1690,11 @@ void ocpnToolBarSimple::Init() {
   EnableTooltips();
 #endif
   m_tbenableRolloverBitmaps = false;
+
+
+
+
+
 }
 
 wxToolBarToolBase *ocpnToolBarSimple::DoAddTool(
@@ -1716,6 +1721,25 @@ wxToolBarToolBase *ocpnToolBarSimple::AddTool(
   ocpnToolBarTool *tool = (ocpnToolBarTool *)InsertTool(
       GetToolsCount(), toolid, label, bitmap, bmpDisabled, kind, shortHelp,
       longHelp, data);
+
+#ifdef HAVE_WX_GESTURE_EVENTS
+
+  fprintf(stderr, "Toolbar::%s INSTALL GESTURES\n", __func__);
+
+  if (!EnableTouchEvents( wxTOUCH_PRESS_GESTURES | wxTOUCH_ZOOM_GESTURE)) {
+    wxLogError("Failed to enable touch events");
+  }
+  
+  Bind(wxEVT_GESTURE_ZOOM, &ocpnToolBarSimple::OnZoom, tool);
+  Bind(wxEVT_LONG_PRESS, &ocpnToolBarSimple::OnLongPress, tool);
+
+  Bind(wxEVT_LEFT_UP, &ocpnToolBarSimple::OnLeftUp, tool);
+  Bind(wxEVT_LEFT_DOWN, &ocpnToolBarSimple::OnLeftDown, tool);
+
+  Bind(wxEVT_MOTION, &ocpnToolBarSimple::OnMotion, tool);
+
+#endif
+
   return tool;
 }
 
@@ -1840,6 +1864,7 @@ bool ocpnToolBarSimple::Create(wxWindow *parent, wxWindowID id,
   m_tooltip_off = 3000;
 
   m_tbenableRolloverBitmaps = false;
+
 
   return true;
 }
@@ -2151,10 +2176,46 @@ void ocpnToolBarSimple::OnToolTipOffTimerEvent(wxTimerEvent &event) {
 int s_dragx, s_dragy;
 bool leftDown;
 
+
+void ocpnToolBarSimple::OnLeftUp(wxMouseEvent &event) {
+  fprintf(stderr, "toolbar %s...\n", __func__);
+  OnMouseEvent(event);
+}
+
+void ocpnToolBarSimple::OnLeftDown(wxMouseEvent &event) {
+  fprintf(stderr, "toolbar %s...\n", __func__);
+  OnMouseEvent(event);
+  return;
+}
+
+void ocpnToolBarSimple::OnLongPress(wxLongPressEvent &event) {
+  fprintf(stderr, "toolbar %s...\n", __func__);
+}
+
+void ocpnToolBarSimple::OnZoom(wxZoomGestureEvent &event) {
+  fprintf(stderr, "toolbar %s...\n", __func__);
+}
+
+void ocpnToolBarSimple::OnMotion(wxMouseEvent &event) {
+
+  fprintf(stderr, "toolbar %s...(motion %d)\n", __func__, m_leftDown);
+
+  /* This is a workaround, to the fact that on touchscreen, OnMotion comes with
+     dragging, upon simple click, and without the OnLeftDown event before Thus,
+     this consists in skiping it, and setting the leftdown bit according to a
+     status that we trust */
+  event.m_leftDown = m_leftDown;
+  OnMouseEvent(event);
+}
+
+
+
 void ocpnToolBarSimple::OnMouseEvent(wxMouseEvent &event) {
 #ifdef __OCPN__ANDROID__
   if (!event.IsButton()) return;
 #endif
+
+  fprintf(stderr, "toolbar %s...(%d,%d)\n", __func__, event.LeftDown(), event.LeftUp());
 
   wxCoord x, y;
   event.GetPosition(&x, &y);
@@ -2339,7 +2400,9 @@ void ocpnToolBarSimple::OnMouseEvent(wxMouseEvent &event) {
   }
 
   // Left button pressed.
-  if (event.LeftIsDown()) m_leftDown = true;  // trigger on
+  if (event.LeftIsDown()) { m_leftDown = true;  // trigger on
+    fprintf(stderr, "toolbar: left is down !\n");
+  }
 
   if (event.LeftDown() && tool->IsEnabled()) {
     if (tool->CanBeToggled()) {

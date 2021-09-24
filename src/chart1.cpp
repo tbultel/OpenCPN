@@ -4404,6 +4404,9 @@ void MyFrame::RefreshGroupIndices(void) {
 }
 
 void MyFrame::OnToolLeftClick(wxCommandEvent &event) {
+
+  fprintf(stderr, "%s...(%d)\n", __func__, event.GetId());
+
   if (g_MainToolbar) g_MainToolbar->HideTooltip();
 
   switch (event.GetId()) {

@@ -17,7 +17,7 @@
 *.csv      text
 *.tab      text
 *.tsv      text
-*.txt      text
+*.txt      binary
 *.sql      text
 
 # Graphics
@@ -30,6 +30,8 @@
 *.ico      binary
 *.svg      text
 *.eps      binary
+
+*.in	   binary
 
 # Scripts
 *.bash     text eol=lf

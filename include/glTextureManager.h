@@ -27,7 +27,7 @@
 #ifndef __GLTEXTUREMANAGER_H__
 #define __GLTEXTUREMANAGER_H__
 
-const wxEventType wxEVT_OCPN_COMPRESSIONTHREAD = wxNewEventType();
+const wxEventType wxEVT_OCPN_COMPRESSIONTHREAD = wxNewEventType((char*) "wxEVT_OCPN_COMPRESSIONTHREAD");
 
 class JobTicket;
 class wxGenericProgressDialog;

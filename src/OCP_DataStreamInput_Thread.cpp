@@ -47,7 +47,7 @@
 #define DS_RX_BUFFER_SIZE 4096
 
 extern const wxEventType wxEVT_OCPN_DATASTREAM;
-const wxEventType wxEVT_OCPN_THREADMSG = wxNewEventType();
+const wxEventType wxEVT_OCPN_THREADMSG = wxNewEventType((char*) "wxEVT_OCPN_THREADMSG");
 
 #include "chart1.h"
 extern MyFrame *gFrame;

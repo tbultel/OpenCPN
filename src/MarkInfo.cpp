@@ -195,7 +195,7 @@ void OCPNIconCombo::Clear(void) {
  */
 
 // DEFINE_EVENT_TYPE(EVT_LLCHANGE)           // events from LatLonTextCtrl
-const wxEventType EVT_LLCHANGE = wxNewEventType();
+const wxEventType EVT_LLCHANGE = wxNewEventType((char*) "EVT_LLCHANGE");
 //------------------------------------------------------------------------------
 //    LatLonTextCtrl Window Implementation
 //------------------------------------------------------------------------------

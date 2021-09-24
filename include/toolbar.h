@@ -159,6 +159,15 @@ public:
   void OnPaint(wxPaintEvent &event);
   void OnSize(wxSizeEvent &event);
   void OnMouseEvent(wxMouseEvent &event);
+
+  void OnLeftDown(wxMouseEvent &event);
+  void OnLeftUp(wxMouseEvent &event);
+  void OnMotion(wxMouseEvent &event);
+  
+  void OnLongPress(wxLongPressEvent &event);
+  void OnZoom(wxZoomGestureEvent& event);
+
+  
   void OnKillFocus(wxFocusEvent &event);
   void OnToolTipTimerEvent(wxTimerEvent &event);
   void OnToolTipOffTimerEvent(wxTimerEvent &event);

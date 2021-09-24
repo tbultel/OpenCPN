@@ -892,7 +892,7 @@ class StatusIconPanel: public wxPanel
 //    PlugIn Messaging scheme Event
 //------------------------------------------------------------------------------
 
-const wxEventType wxEVT_OCPN_MSG = wxNewEventType();
+const wxEventType wxEVT_OCPN_MSG = wxNewEventType((char*) "wxEVT_OCPN_MSG");
 
 OCPN_MsgEvent::OCPN_MsgEvent(wxEventType commandType, int id)
     : wxEvent(id, commandType) {}
@@ -7831,7 +7831,7 @@ wxEvent *OCPN_downloadEvent::Clone() const {
 }
 
 // const wxEventType wxEVT_DOWNLOAD_EVENT = wxNewEventType();
-DECL_EXP wxEventType wxEVT_DOWNLOAD_EVENT = wxNewEventType();
+DECL_EXP wxEventType wxEVT_DOWNLOAD_EVENT = wxNewEventType((char*) "wxEVT_DOWNLOAD_EVENT");
 
 _OCPN_DLStatus g_download_status;
 _OCPN_DLCondition g_download_condition;

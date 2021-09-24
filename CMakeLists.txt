@@ -540,6 +540,8 @@ if (QT_ANDROID)
 endif (QT_ANDROID)
 
 
+add_compile_options("-DWXBUILDING")
+
 #
 # Installation directory setup
 #

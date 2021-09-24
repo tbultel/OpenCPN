@@ -95,7 +95,7 @@ static const long long lNaN = 0xfff8000000000000;
 #define NAN (*(double *)&lNaN)
 #endif
 
-const wxEventType wxEVT_OCPN_DATASTREAM = wxNewEventType();
+const wxEventType wxEVT_OCPN_DATASTREAM = wxNewEventType((char*) "wxEVT_OCPN_DATASTREAM");
 
 extern bool g_benableUDPNullHeader;
 

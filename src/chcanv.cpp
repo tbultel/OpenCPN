@@ -877,13 +877,12 @@ ChartCanvas::ChartCanvas(wxFrame *frame, int canvasIndex)
 #ifdef HAVE_WX_GESTURE_EVENTS
   //#ifndef ocpnUSE_GL
 
-  if (!EnableTouchEvents(wxTOUCH_ZOOM_GESTURE | wxTOUCH_PAN_GESTURES |
+  if (!EnableTouchEvents(wxTOUCH_ZOOM_GESTURE | 
                          wxTOUCH_PRESS_GESTURES)) {
     wxLogError("Failed to enable touch events");
   }
 
   Bind(wxEVT_GESTURE_ZOOM, &ChartCanvas::OnZoom, this);
-  Bind(wxEVT_GESTURE_PAN, &ChartCanvas::OnPan, this);
 
   Bind(wxEVT_LONG_PRESS, &ChartCanvas::OnLongPress, this);
   Bind(wxEVT_PRESS_AND_TAP, &ChartCanvas::OnPressAndTap, this);
@@ -1091,6 +1090,9 @@ void ChartCanvas::OnRouteFinishTimerEvent(wxTimerEvent &event) {
 
 #ifdef HAVE_WX_GESTURE_EVENTS
 void ChartCanvas::OnLongPress(wxLongPressEvent &event) {
+
+  fprintf(stderr, "%s...\n", __func__);
+
   /* we defer the popup menu call upon the leftup event
   else the menu disappears immediately,
   (see
@@ -1100,14 +1102,24 @@ void ChartCanvas::OnLongPress(wxLongPressEvent &event) {
 }
 
 void ChartCanvas::OnPressAndTap(wxPressAndTapEvent &event) {
+  fprintf(stderr, "%s...\n", __func__);
   // not implemented yet
 }
 
-void ChartCanvas::OnRightUp(wxMouseEvent &event) { MouseEvent(event); }
+void ChartCanvas::OnRightUp(wxMouseEvent &event) { 
+  fprintf(stderr, "%s...\n", __func__);
+  MouseEvent(event); 
+}
 
-void ChartCanvas::OnRightDown(wxMouseEvent &event) { MouseEvent(event); }
+void ChartCanvas::OnRightDown(wxMouseEvent &event) { 
+  fprintf(stderr, "%s...\n", __func__);
+  MouseEvent(event); 
+  }
 
 void ChartCanvas::OnLeftUp(wxMouseEvent &event) {
+
+fprintf(stderr, "%s...\n", __func__);
+
   wxPoint pos = event.GetPosition();
 
   m_leftdown = false;
@@ -1130,6 +1142,9 @@ void ChartCanvas::OnLeftUp(wxMouseEvent &event) {
 }
 
 void ChartCanvas::OnLeftDown(wxMouseEvent &event) {
+
+  fprintf(stderr, "%s...\n", __func__);
+
   m_leftdown = true;
 
   wxPoint pos = event.GetPosition();
@@ -1137,6 +1152,9 @@ void ChartCanvas::OnLeftDown(wxMouseEvent &event) {
 }
 
 void ChartCanvas::OnMotion(wxMouseEvent &event) {
+
+  fprintf(stderr, "%s...(left down %d)\n", __func__, m_leftdown);
+
   /* This is a workaround, to the fact that on touchscreen, OnMotion comes with
      dragging, upon simple click, and without the OnLeftDown event before Thus,
      this consists in skiping it, and setting the leftdown bit according to a
@@ -1145,16 +1163,17 @@ void ChartCanvas::OnMotion(wxMouseEvent &event) {
   MouseEvent(event);
 }
 
-void ChartCanvas::OnPan(wxPanGestureEvent &event) {
-  wxPoint delta = event.GetDelta();
-  PanCanvas(-delta.x, -delta.y);
-}
+
 
 void ChartCanvas::OnZoom(wxZoomGestureEvent &event) {
+
+  fprintf(stderr, "%s...\n", __func__);
+
   /* there are spurious end zoom events upon right-click */
   if (event.IsGestureEnd()) return;
 
   double factor = event.GetZoomFactor();
+  fprintf(stderr, "%s: factor %f\n", __func__, factor);
 
   if (event.IsGestureStart() || m_oldVPSScale < 0) {
     m_oldVPSScale = GetVPScale();
@@ -1165,6 +1184,8 @@ void ChartCanvas::OnZoom(wxZoomGestureEvent &event) {
 
   ZoomCanvas(wanted_factor, true, false);
 
+#if 0
+
   //  Allow combined zoom/pan operation
   if (event.IsGestureStart()) {
     m_zoomStartPoint = event.GetPosition();
@@ -1173,11 +1194,13 @@ void ChartCanvas::OnZoom(wxZoomGestureEvent &event) {
     PanCanvas(-delta.x, -delta.y);
     m_zoomStartPoint = event.GetPosition();
   }
+#endif  
 }
 
 void ChartCanvas::OnWheel(wxMouseEvent &event) { MouseEvent(event); }
 
 void ChartCanvas::OnDoubleLeftClick(wxMouseEvent &event) {
+  fprintf(stderr, "%s...\n", __func__);
   DoRotateCanvas(0.0);
 }
 #endif /* HAVE_WX_GESTURE_EVENTS */
@@ -8898,6 +8921,9 @@ bool ChartCanvas::MouseEventProcessCanvas(wxMouseEvent &event) {
 }
 
 void ChartCanvas::MouseEvent(wxMouseEvent &event) {
+
+  fprintf(stderr, "%s...\n", __func__);
+
   if (MouseEventOverlayWindows(event)) return;
 
   if (MouseEventSetup(event)) return;  // handled, no further action required
