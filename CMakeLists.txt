@@ -874,6 +874,7 @@ endif( wxWidgets_VERSION_STRING)
 # There are no touch capable MacOS machines
 if (( wxWidgets_VERSION_STRING VERSION_GREATER "3.1.0") AND (NOT APPLE))
     add_definitions("-DHAVE_WX_GESTURE_EVENTS")
+    add_compile_options("-DWXBUILDING")
 endif()
 
 message(STATUS "")
@@ -2956,3 +2957,4 @@ if (NOT TARGET uninstall)
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/uninstall.cmake
   )
 endif ()
+
