@@ -1619,7 +1619,7 @@ void ToolTipWin::OnPaint(wxPaintEvent &event) {
 BEGIN_EVENT_TABLE(ocpnToolBarSimple, wxControl)
 EVT_SIZE(ocpnToolBarSimple::OnSize) EVT_PAINT(ocpnToolBarSimple::OnPaint)
     EVT_KILL_FOCUS(ocpnToolBarSimple::OnKillFocus)
-//        EVT_MOUSE_EVENTS(ocpnToolBarSimple::OnMouseEvent)
+        EVT_MOUSE_EVENTS(ocpnToolBarSimple::OnMouseEvent)
             EVT_TIMER(TOOLTIPON_TIMER, ocpnToolBarSimple::OnToolTipTimerEvent)
                 EVT_TIMER(TOOLTIPOFF_TIMER,
                           ocpnToolBarSimple::OnToolTipOffTimerEvent)
@@ -1722,7 +1722,7 @@ wxToolBarToolBase *ocpnToolBarSimple::AddTool(
       GetToolsCount(), toolid, label, bitmap, bmpDisabled, kind, shortHelp,
       longHelp, data);
 
-#ifdef HAVE_WX_GESTURE_EVENTS
+#if 0 //HAVE_WX_GESTURE_EVENTS
 
   fprintf(stderr, "Toolbar::%s INSTALL GESTURES\n", __func__);
 
